@@ -1,5 +1,5 @@
 {
-  "name": "tinycolors",
+  "name": "tinyrainbow",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -8,13 +8,12 @@
     "prepare": "husky install",
     "release": "bumpp package.json --commit --push --tag && tsup && clean-publish"
   },
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     "types": "./dist/index.d.ts",
     "import": "./dist/index.js",
-    "require": "./dist/index.cjs",
     "default": "./dist/index.js"
   },
   "files": [
@@ -22,13 +21,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tinylibs/tinycolors.git"
+    "url": "git+https://github.com/tinylibs/tinyrainbow.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tinylibs/tinycolors/issues"
+    "url": "https://github.com/tinylibs/tinyrainbow/issues"
   },
-  "homepage": "https://github.com/tinylibs/tinycolors#readme",
+  "homepage": "https://github.com/tinylibs/tinyrainbow#readme",
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.2.4",
     "@size-limit/time": "^8.2.4",

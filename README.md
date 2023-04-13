@@ -1,4 +1,4 @@
-# tinycolors
+# tinyrainbow
 
 > a fork of [picocolors](https://www.npmjs.com/package/picocolors), but browser friendly
 
@@ -6,19 +6,19 @@
 
 ```bash
 // with npm
-$ npm install -D tinycolors
+$ npm install -D tinyrainbow
 
 // with pnpm
-$ pnpm install -D tinycolors
+$ pnpm install -D tinyrainbow
 
 // with yarn
-$ yarn install -D tinycolors
+$ yarn install -D tinyrainbow
 ```
 
 ## Usage
 
 ```js
-import { createColors } from 'tinycolors'
+import { createColors } from 'tinyrainbow'
 import { isatty } from 'node:tty'
 const c = createColors(isatty(2))
 
