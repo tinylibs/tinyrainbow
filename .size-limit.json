@@ -1,0 +1,7 @@
+[
+  {
+    "path": "dist/index.js",
+    "import": "{ createColors, getDefaultColors }",
+    "limit": "300 ms"
+  }
+]

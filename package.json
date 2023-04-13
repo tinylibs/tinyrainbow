@@ -1,0 +1,54 @@
+{
+  "name": "tinycolors",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "prepare": "husky install",
+    "release": "bumpp package.json --commit --push --tag && tsup && clean-publish"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js",
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.js"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tinylibs/tinycolors.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tinylibs/tinycolors/issues"
+  },
+  "homepage": "https://github.com/tinylibs/tinycolors#readme",
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^8.2.4",
+    "@size-limit/time": "^8.2.4",
+    "@types/node": "^18.15.11",
+    "bumpp": "^9.1.0",
+    "changelogithub": "^0.12.7",
+    "clean-publish": "^4.2.0",
+    "husky": "^8.0.3",
+    "nano-staged": "^0.8.0",
+    "prettier": "^2.8.7",
+    "size-limit": "^8.2.4",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4",
+    "vitest": "^0.30.1"
+  },
+  "keywords": [
+    "colors",
+    "tty"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
