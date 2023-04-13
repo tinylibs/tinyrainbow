@@ -1,6 +1,6 @@
 const colorsMap = {
-  bold: [1, 22, '\x1B[22m\x1B[1m]'],
-  dim: [2, 22, '\x1B[22m\x1B[2m]'],
+  bold: [1, 22, '\x1B[22m\x1B[1m'],
+  dim: [2, 22, '\x1B[22m\x1B[2m'],
   italic: [3, 23],
   underline: [4, 24],
   inverse: [7, 27],
@@ -26,7 +26,7 @@ const colorsMap = {
 } as const
 
 export interface Formatter {
-  (input: unknown): string
+  (input?: unknown): string
   open: string
   close: string
 }
@@ -77,7 +77,7 @@ export function isSupported(isTTY = false) {
       (isTTY && p.env.TERM !== 'dumb') ||
       'CI' in p.env)
   // chromium browsers support ANSI colors in console
-  // @ts-expect-error chrome is not standard feature
+  // @ts-expect-error chrome is not a standard feature
   return nodeEnabled || (typeof window !== 'undefined' && !!window.chrome)
 }
 

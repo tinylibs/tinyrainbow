@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
+    "test": "vitest --single-thread",
     "prepare": "husky install",
     "release": "bumpp package.json --commit --push --tag && tsup && clean-publish"
   },
