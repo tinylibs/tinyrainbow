@@ -18,9 +18,7 @@ $ yarn install -D tinyrainbow
 ## Usage
 
 ```js
-import { createColors } from 'tinyrainbow'
-import { isatty } from 'node:tty'
-const c = createColors(isatty(2))
+import c from 'tinyrainbow'
 
 console.log(c.red(c.bold('Hello, World!')))
 ```
