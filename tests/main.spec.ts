@@ -1,4 +1,4 @@
-import pc from '../src/node'
+import { createColors } from '../src/node'
 import { assert, test } from 'vitest'
 
 const FMT = {
@@ -28,6 +28,10 @@ const FMT = {
   bgCyan: ['\x1b[46m', '\x1b[49m'],
   bgWhite: ['\x1b[47m', '\x1b[49m'],
 } as const
+
+delete process.env.GITHUB_ACTIONS
+
+const pc = createColors(true)
 
 test('color matching', () => {
   for (let key in FMT) {
