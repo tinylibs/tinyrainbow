@@ -1,4 +1,5 @@
 const colorsMap = {
+  reset: [0, 0],
   bold: [1, 22, '\x1B[22m\x1B[1m'],
   dim: [2, 22, '\x1B[22m\x1B[2m'],
   italic: [3, 23],
@@ -62,20 +63,17 @@ export function getDefaultColors(): Colors {
 }
 
 export function isSupported(isTTY = false) {
-  if (!isTTY) return false
   const p = typeof process !== 'undefined' ? process : undefined
+  const env = p?.env || {}
+  const argv = p?.argv || []
   const nodeEnabled =
-    p &&
-    Array.isArray(p.argv) &&
-    typeof p.env === 'object' &&
-    p.env &&
-    !('NO_COLOR' in p.env || p.argv.includes('--no-color')) &&
-    !('GITHUB_ACTIONS' in p.env) &&
-    ('FORCE_COLOR' in p.env ||
-      p.argv.includes('--color') ||
-      p.platform === 'win32' ||
-      (isTTY && p.env.TERM !== 'dumb') ||
-      'CI' in p.env)
+    !('NO_COLOR' in env || argv.includes('--no-color')) &&
+    !('GITHUB_ACTIONS' in env) &&
+    ('FORCE_COLOR' in env ||
+      argv.includes('--color') ||
+      p?.platform === 'win32' ||
+      (isTTY && env.TERM !== 'dumb') ||
+      'CI' in env)
   // chromium browsers support ANSI colors in console
   // @ts-expect-error chrome is not a standard feature
   return nodeEnabled || (typeof window !== 'undefined' && !!window.chrome)
@@ -113,7 +111,6 @@ export function createColors(isTTY = false): Colors {
 
   const colorsObject = {
     isColorSupported: enabled,
-    reset: enabled ? (s: string) => `\x1B[0m${s}\x1B[0m` : string,
   } as Colors
 
   const wrap = (num: number) => `\x1B[${num}m`
