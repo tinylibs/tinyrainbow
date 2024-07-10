@@ -149,3 +149,10 @@ test('non-string input', () => {
   assert.equal(pc.red(false), FMT.red[0] + 'false' + FMT.red[1])
   assert.equal(pc.red(Infinity), FMT.red[0] + 'Infinity' + FMT.red[1])
 })
+
+test('no maximum call stack error', () => {
+  process.env.FORCE_COLOR = '1'
+  delete process.env.GITHUB_ACTIONS
+  assert.isTrue(pc.isColorSupported)
+  assert.exists(pc.blue(pc.blue('x').repeat(10000)))
+})
