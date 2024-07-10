@@ -68,7 +68,6 @@ export function isSupported(isTTY = false) {
   const argv = p?.argv || []
   const nodeEnabled =
     !('NO_COLOR' in env || argv.includes('--no-color')) &&
-    !('GITHUB_ACTIONS' in env) &&
     ('FORCE_COLOR' in env ||
       argv.includes('--color') ||
       p?.platform === 'win32' ||
