@@ -60,29 +60,24 @@ export type Colors = ColorsMethods & {
   reset: (input: unknown) => string
 }
 
-const colorsEntries = Object.entries(colorsMap)
-
 function string(str: unknown) {
   return String(str)
 }
 string.open = ''
 string.close = ''
 
-const defaultColors = /* #__PURE__ */ colorsEntries.reduce(
-  (acc, [key]) => {
-    acc[key as ColorName] = string
-    return acc
-  },
-  { isColorSupported: false } as Colors
-)
-
 export function getDefaultColors(): Colors {
-  return { ...defaultColors }
+  const defaultColors = {} as Colors
+  for (const name in colorsMap) {
+    defaultColors[name as 'reset'] = string
+  }
+  return defaultColors
 }
 
-export function isSupported(isTTY = false) {
+export function isSupported() {
   const p = typeof process !== 'undefined' ? process : undefined
   const env = p?.env || {}
+  const isTTY = env.FORCE_TTY !== undefined
   const argv = p?.argv || []
   const nodeEnabled =
     !('NO_COLOR' in env || argv.includes('--no-color')) &&
@@ -96,8 +91,8 @@ export function isSupported(isTTY = false) {
   return nodeEnabled || (typeof window !== 'undefined' && !!window.chrome)
 }
 
-export function createColors(isTTY = false): Colors {
-  const enabled = isSupported(isTTY)
+export function createColors(): Colors {
+  const enabled = isSupported()
 
   const replaceClose = (
     string: string,
@@ -134,7 +129,8 @@ export function createColors(isTTY = false): Colors {
 
   const wrap = (num: number) => `\x1B[${num}m`
 
-  for (const [name, formatterArgs] of colorsEntries) {
+  for (const name in colorsMap) {
+    const formatterArgs = colorsMap[name as 'bold']
     colorsObject[name as ColorName] = enabled
       ? formatter(
           wrap(formatterArgs[0]),
