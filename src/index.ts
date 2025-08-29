@@ -142,3 +142,5 @@ export function createColors(): Colors {
 
   return colorsObject
 }
+
+export default createColors()
