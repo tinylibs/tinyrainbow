@@ -77,7 +77,7 @@ export function getDefaultColors(): Colors {
 export function isSupported() {
   const p = typeof process !== 'undefined' ? process : undefined
   const env = p?.env || {}
-  const isTTY = env.FORCE_TTY !== undefined
+  const isTTY = env.FORCE_TTY !== 'false' // assume TTY
   const argv = p?.argv || []
   const nodeEnabled =
     !('NO_COLOR' in env || argv.includes('--no-color')) &&
