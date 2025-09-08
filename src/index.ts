@@ -67,7 +67,10 @@ string.open = ''
 string.close = ''
 
 export function getDefaultColors(): Colors {
-  const defaultColors = {} as Colors
+  const defaultColors = {
+    isColorSupported: false,
+    reset: string,
+  } as Colors
   for (const name in colorsMap) {
     defaultColors[name as 'reset'] = string
   }
