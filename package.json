@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
+    "pub": "clean-publish",
     "test": "vitest --single-thread",
     "release": "bumpp package.json --commit --push --tag && tsup && clean-publish"
   },
