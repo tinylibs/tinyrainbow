@@ -94,8 +94,8 @@ export function isSupported() {
   return nodeEnabled || (typeof window !== 'undefined' && !!window.chrome)
 }
 
-export function createColors(): Colors {
-  const enabled = isSupported()
+export function createColors({ force }: { force?: boolean } = {}): Colors {
+  const enabled = force || isSupported()
 
   const replaceClose = (
     string: string,
@@ -146,4 +146,14 @@ export function createColors(): Colors {
   return colorsObject
 }
 
-export default createColors()
+const colors = createColors()
+
+export function disableDefaultColors() {
+  Object.assign(colors, getDefaultColors())
+}
+
+export function enabledDefaultColors() {
+  Object.assign(colors, createColors({ force: true }))
+}
+
+export default colors
