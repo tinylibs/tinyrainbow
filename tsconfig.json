@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "rootDir": "./",
+    // tsup injects `baseUrl` during the dts build, which TypeScript 6 reports as deprecated
+    "ignoreDeprecations": "6.0",
+    "module": "node18",
     "target": "esnext",
+    "types": ["node"],
     "strict": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "noUncheckedIndexedAccess": true,
-    "baseUrl": "."
+    "noUncheckedIndexedAccess": true
   },
-  "include": ["src/**/*", "tests/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*", "tests/**/*"]
 }
