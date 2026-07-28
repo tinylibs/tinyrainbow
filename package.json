@@ -4,6 +4,7 @@
   "packageManager": "pnpm@10.34.5",
   "description": "A small library to print colourful messages.",
   "type": "module",
+  "sideEffects": false,
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
