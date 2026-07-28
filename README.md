@@ -1,10 +1,10 @@
-# tinyrainbow
+# 🌈 tinyrainbow
 
-Output your colorful messages in the terminal or browser console that support ANSI colors (Chrome engines).
+> Output your colorful messages in the terminal or browser console that support ANSI colors (Chrome engines).
 
-A small (`~ 6 kB` unpacked) fork of [picocolors](https://www.npmjs.com/package/picocolors) with support for `exports` field.
+Originally a fork of [picocolors](https://www.npmjs.com/package/picocolors), tinyrainbow is a tiny and fast library for coloring terminal output.
 
-Supports only ESM.
+It is published as ES modules and supports TypeScript out of the box.
 
 ## Installing
 
