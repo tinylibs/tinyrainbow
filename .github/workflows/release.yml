@@ -47,8 +47,10 @@ jobs:
       - run: pnpm version ${TAG_NAME} --git-tag-version=false
         env:
           TAG_NAME: ${{ github.ref_name }}
-      - run: pnpm dlx clean-publish
+      - run: pnpm dlx clean-publish --without-publish --temp-dir package
       - run: npm stage publish --provenance --access public --tag next
+        working-directory: package
         if: 'github.event.release.prerelease'
       - run: npm stage publish --provenance --access public
+        working-directory: package
         if: '!github.event.release.prerelease'
