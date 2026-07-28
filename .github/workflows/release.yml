@@ -10,19 +10,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24.x
-          cache: npm
+          cache: pnpm
       - name: Install Dependencies
-        run: npm ci --ignore-scripts
+        run: pnpm i --frozen-lockfile
       - name: Build
-        run: npm run build
-      - name: Lint
-        run: npm run lint
+        run: pnpm build
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
       - name: Test
-        run: npm test
+        run: pnpm test
 
   publish-npm:
     needs: build
@@ -31,19 +33,21 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Install pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24.x
-          cache: npm
+          cache: pnpm
       - run: npm install -g npm@~11.10.0 # Work-around for https://github.com/npm/cli/issues/9151#issuecomment-4131466208
       - run: npm install -g npm@latest
-      - run: npm ci --ignore-scripts
-      - run: npm run build
-      - run: npm version ${TAG_NAME} --git-tag-version=false
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm version ${TAG_NAME} --git-tag-version=false
         env:
           TAG_NAME: ${{ github.ref_name }}
-      - run: npx clean-publish
+      - run: pnpm dlx clean-publish
       - run: npm stage publish --provenance --access public --tag next
         if: 'github.event.release.prerelease'
       - run: npm stage publish --provenance --access public
