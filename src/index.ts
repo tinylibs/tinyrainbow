@@ -101,7 +101,7 @@ export function createColors({ force }: { force?: boolean } = {}): Colors {
     string: string,
     close: string,
     replace: string,
-    index: number,
+    index: number
   ): string => {
     let result = ''
     let cursor = 0

@@ -1,5 +1,5 @@
 import { fork } from 'node:child_process'
-import { createColors } from '../src/node'
+import { createColors } from '../dist/index.js'
 import { assert, expect, test } from 'vitest'
 import { resolve } from 'node:path'
 
