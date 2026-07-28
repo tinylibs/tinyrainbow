@@ -1,7 +1,9 @@
 import { fork } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import { createColors } from '../dist/index.js'
 import { assert, expect, test } from 'vitest'
 import { resolve } from 'node:path'
+import { chromium } from 'playwright'
 
 const FMT = {
   reset: ['\x1b[0m', '\x1b[0m'],
@@ -180,6 +182,50 @@ test('non-TTY does not enable colors', async () => {
     "
   `)
 })
+
+test('chromium console enables colors', async () => {
+  // the headless shell has no `chrome` global, so the full browser is required
+  const browser = await chromium.launch({ channel: 'chromium' })
+
+  try {
+    const page = await browser.newPage()
+
+    const logs: string[] = []
+    page.on('console', (msg) => logs.push(msg.text()))
+
+    await page.route('https://tinyrainbow.test/**', (route) => {
+      const { pathname } = new URL(route.request().url())
+
+      if (pathname === '/') {
+        return route.fulfill({
+          contentType: 'text/html',
+          body: '<script type="module" src="/browser-page.mjs"></script>',
+        })
+      }
+
+      const file =
+        pathname === '/index.js'
+          ? resolve(__dirname, '../dist/index.js')
+          : resolve(__dirname, 'fixtures', pathname.slice(1))
+
+      return route.fulfill({
+        contentType: 'text/javascript',
+        body: readFileSync(file, 'utf8'),
+      })
+    })
+
+    await page.goto('https://tinyrainbow.test/')
+    await expect.poll(() => logs).toHaveLength(3)
+
+    expect(logs.join('\n')).toMatchInlineSnapshot(`
+      "[32mGreen[39m
+      [31mRed[39m
+      { isColorSupported: true }"
+    `)
+  } finally {
+    await browser.close()
+  }
+}, 30_000)
 
 test('FORCE_TTY enables colors', async () => {
   const proc = fork(resolve(__dirname, 'fixtures/child-process.mjs'), {
