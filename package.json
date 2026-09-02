@@ -41,7 +41,7 @@
     "prettier": "^3.9.6",
     "size-limit": "^13.0.3",
     "tsup": "^8.5.1",
-    "typescript": "^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vitest": "^4.1.11"
   },
   "keywords": [
