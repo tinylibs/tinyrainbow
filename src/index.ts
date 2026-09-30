@@ -6,11 +6,13 @@ export interface Formatter {
 
 export type Colors = ReturnType<typeof createColorsMap>
 
-function string(str: unknown) {
+function noop(str: unknown) {
   return String(str)
 }
-string.open = ''
-string.close = ''
+noop.open = ''
+noop.close = ''
+
+const noopFormatter = () => noop;
 
 const replaceClose = (
   string: string,
@@ -45,7 +47,7 @@ const formatter = (open: string, close: string, replace = open) => {
 }
 
 function createColorsMap(enabled: boolean) {
-  const f = enabled ? formatter : () => string
+  const f = enabled ? formatter : noopFormatter
   const colorsMap = {
     isColorSupported: enabled,
     reset: f('\x1B[0m', '\x1B[0m'),
