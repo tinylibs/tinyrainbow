@@ -31,12 +31,16 @@ const replaceClose = (
   return result + string.substring(cursor)
 }
 
-const formatter = (open: string, close: string, replace = open) => {
-  const openLength = open.length
+const formatter = (
+  open: string,
+  close: string,
+  replace = open,
+  offset = open.length
+) => {
   const closeLength = close.length
   const fn = (input: unknown) => {
     const string = input + ''
-    const index = string.indexOf(close, openLength)
+    const index = string.indexOf(close, offset)
     return ~index
       ? open + replaceClose(string, close, replace, index, closeLength) + close
       : open + string + close
@@ -44,6 +48,17 @@ const formatter = (open: string, close: string, replace = open) => {
   fn.open = open
   fn.close = close
   return fn
+}
+
+const truecolor = (open: string, close: string) =>
+  formatter(open, close, open, 5)
+
+const hexToRgb = (hex: string): string => {
+  const value = hex.charCodeAt(0) === 35 ? hex.slice(1) : hex
+  const int = parseInt(value, 16) || 0
+  return value.length < 6
+    ? `${((int >> 8) & 15) * 17};${((int >> 4) & 15) * 17};${(int & 15) * 17}`
+    : `${(int >> 16) & 255};${(int >> 8) & 255};${int & 255}`
 }
 
 function createColorsMap(enabled: boolean) {
@@ -93,6 +108,21 @@ function createColorsMap(enabled: boolean) {
     bgMagentaBright: f('\x1B[105m', '\x1B[49m'),
     bgCyanBright: f('\x1B[106m', '\x1B[49m'),
     bgWhiteBright: f('\x1B[107m', '\x1B[49m'),
+
+    rgb: enabled
+      ? (r: number, g: number, b: number) =>
+          truecolor(`\x1B[38;2;${r};${g};${b}m`, '\x1B[39m')
+      : noopFormatter,
+    bgRgb: enabled
+      ? (r: number, g: number, b: number) =>
+          truecolor(`\x1B[48;2;${r};${g};${b}m`, '\x1B[49m')
+      : noopFormatter,
+    hex: enabled
+      ? (hex: string) => truecolor(`\x1B[38;2;${hexToRgb(hex)}m`, '\x1B[39m')
+      : noopFormatter,
+    bgHex: enabled
+      ? (hex: string) => truecolor(`\x1B[48;2;${hexToRgb(hex)}m`, '\x1B[49m')
+      : noopFormatter,
   } as const
   return colorsMap
 }

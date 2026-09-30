@@ -1,6 +1,6 @@
 import { fork } from 'node:child_process'
 import { readFileSync } from 'node:fs'
-import { createColors } from '../dist/index.js'
+import { createColors, getDefaultColors } from '../dist/index.js'
 import { assert, expect, test } from 'vitest'
 import { resolve } from 'node:path'
 import { chromium } from 'playwright'
@@ -141,6 +141,57 @@ test('close sequence replacement', () => {
       ' baz' +
       FMT.yellow[1]
   )
+})
+
+test('truecolor', () => {
+  assert.equal(
+    pc.rgb(255, 136, 0)('string'),
+    '\x1b[38;2;255;136;0mstring\x1b[39m'
+  )
+  assert.equal(
+    pc.bgRgb(255, 136, 0)('string'),
+    '\x1b[48;2;255;136;0mstring\x1b[49m'
+  )
+
+  for (const hex of ['#ff8800', 'ff8800', '#f80', 'f80']) {
+    assert.equal(pc.hex(hex)('string'), '\x1b[38;2;255;136;0mstring\x1b[39m')
+    assert.equal(pc.bgHex(hex)('string'), '\x1b[48;2;255;136;0mstring\x1b[49m')
+  }
+
+  assert.equal(pc.hex('#000')('string'), '\x1b[38;2;0;0;0mstring\x1b[39m')
+  assert.equal(
+    pc.hex('#ffffff')('string'),
+    '\x1b[38;2;255;255;255mstring\x1b[39m'
+  )
+})
+
+test('truecolor wrapping and nesting', () => {
+  const orange = pc.hex('#ff8800')
+
+  assert.equal(
+    orange(`foo ${pc.red('bar')} baz`),
+    '\x1b[38;2;255;136;0m' +
+      'foo ' +
+      FMT.red[0] +
+      'bar' +
+      '\x1b[38;2;255;136;0m' +
+      ' baz' +
+      FMT.red[1]
+  )
+
+  assert.equal(
+    pc.bold(orange('==TEST==')),
+    FMT.bold[0] + '\x1b[38;2;255;136;0m' + '==TEST==' + FMT.red[1] + FMT.bold[1]
+  )
+})
+
+test('truecolor is disabled with colors', () => {
+  const disabled = getDefaultColors()
+
+  assert.equal(disabled.rgb(255, 136, 0)('string'), 'string')
+  assert.equal(disabled.bgRgb(255, 136, 0)('string'), 'string')
+  assert.equal(disabled.hex('#ff8800')('string'), 'string')
+  assert.equal(disabled.bgHex('#ff8800')('string'), 'string')
 })
 
 test('non-string input', () => {
