@@ -32,17 +32,17 @@
   },
   "homepage": "https://github.com/tinylibs/tinyrainbow#readme",
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^14.1.0",
-    "@size-limit/time": "^14.1.0",
-    "@types/node": "^26.6.3",
+    "@size-limit/preset-small-lib": "^14.3.0",
+    "@size-limit/time": "^14.3.0",
+    "@types/node": "^26.6.6",
     "clean-publish": "^7.1.0",
     "nano-staged": "^1.0.2",
-    "playwright": "^1.63.0",
-    "prettier": "^3.9.9",
-    "size-limit": "^14.1.0",
-    "tsup": "^8.5.1",
+    "playwright": "^1.64.1",
+    "prettier": "^3.9.10",
+    "size-limit": "^14.3.0",
+    "tsup": "^9.0.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.5"
   },
   "keywords": [
     "colors",
