@@ -182,6 +182,14 @@ export function getDefaultColors(): Colors {
 
 export function isSupported() {
   const p = typeof process !== 'undefined' ? process : undefined
+
+  // In a browser there is no env or argv to inspect, so the checks below would
+  // always pass. Only chromium browsers render ANSI colors in the console.
+  if (!p && typeof window !== 'undefined') {
+    // @ts-expect-error chrome is not a standard feature
+    return !!window.chrome
+  }
+
   const env = p?.env || {}
   const isTTY = env.FORCE_TTY !== 'false' // assume TTY
   const argv = p?.argv || []
@@ -192,9 +200,7 @@ export function isSupported() {
       p?.platform === 'win32' ||
       (isTTY && env.TERM !== 'dumb') ||
       'CI' in env)
-  // chromium browsers support ANSI colors in console
-  // @ts-expect-error chrome is not a standard feature
-  return nodeEnabled || (typeof window !== 'undefined' && !!window.chrome)
+  return nodeEnabled
 }
 
 export function createColors({ force }: { force?: boolean } = {}): Colors {
